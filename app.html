@@ -1,0 +1,852 @@
+<!doctype html>
+<html lang="pt-BR">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UNIELLAS — Um lugar seguro para ser você</title>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="/_sdk/data_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&amp;display=swap" rel="stylesheet">
+  <style>
+    body {
+        box-sizing: border-box;
+        font-family: 'Poppins', sans-serif;
+        margin: 0;
+        background: #fff5fa;
+        color: #4a2b3c;
+        height: 100%;
+    }
+
+    html {
+        height: 100%;
+    }
+
+    header {
+        background: linear-gradient(135deg, #e24888, #e16ba9);
+        color: white;
+        padding: 30px;
+        text-align: center;
+    }
+
+    header h1 {
+        font-size: 40px;
+        margin-bottom: 5px;
+        margin-top: 0;
+    }
+
+    header p {
+        font-size: 18px;
+        font-weight: 300;
+        margin: 0;
+    }
+
+    section {
+        padding: 50px 10%;
+    }
+
+    h2 {
+        color: #d13685;
+        font-size: 28px;
+        margin-bottom: 10px;
+        margin-top: 0;
+    }
+
+    .sobre, .funciona, .beneficios, .publico, .diferencial, .members-section, .login-section {
+        background: white;
+        border-radius: 15px;
+        padding: 30px;
+        margin-bottom: 35px;
+        box-shadow: 0px 4px 15px rgba(0,0,0,0.05);
+    }
+
+    .sobre p, .publico p, .diferencial p {
+        line-height: 1.7;
+        margin: 10px 0 0 0;
+    }
+
+    ul {
+        line-height: 1.7;
+        margin-top: 10px;
+        padding-left: 25px;
+    }
+
+    li {
+        margin-bottom: 8px;
+    }
+
+    .cta {
+        text-align: center;
+        margin: 60px 0 20px;
+    }
+
+    .cta-button {
+        background: #e24888;
+        color: white;
+        padding: 18px 35px;
+        font-size: 20px;
+        border-radius: 50px;
+        border: none;
+        font-weight: bold;
+        transition: 0.3s;
+        cursor: pointer;
+        font-family: inherit;
+    }
+
+    .cta-button:hover {
+        background: #b92c6e;
+        transform: translateY(-2px);
+        box-shadow: 0px 6px 20px rgba(226, 72, 136, 0.3);
+    }
+
+    /* Modal Styles */
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0,0,0,0.5);
+        backdrop-filter: blur(5px);
+    }
+
+    .modal-content {
+        background-color: white;
+        margin: 5% auto;
+        padding: 30px;
+        border-radius: 20px;
+        width: 90%;
+        max-width: 600px;
+        max-height: 80%;
+        overflow-y: auto;
+        position: relative;
+        animation: modalSlideIn 0.3s ease-out;
+    }
+
+    @keyframes modalSlideIn {
+        from {
+            opacity: 0;
+            transform: translateY(-50px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+        cursor: pointer;
+        position: absolute;
+        right: 20px;
+        top: 15px;
+    }
+
+    .close:hover {
+        color: #e24888;
+    }
+
+    .signup-form, .login-form {
+        margin-top: 20px;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        color: #4a2b3c;
+        font-weight: 600;
+    }
+
+    .form-group input,
+    .form-group textarea {
+        width: 100%;
+        padding: 12px 15px;
+        border: 2px solid #f0e6f0;
+        border-radius: 10px;
+        font-size: 16px;
+        font-family: inherit;
+        transition: border-color 0.3s;
+        box-sizing: border-box;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus {
+        outline: none;
+        border-color: #e24888;
+    }
+
+    .form-group textarea {
+        resize: vertical;
+        min-height: 80px;
+    }
+
+    .submit-button, .login-button {
+        width: 100%;
+        background: linear-gradient(135deg, #e24888, #e16ba9);
+        color: white;
+        padding: 15px;
+        border: none;
+        border-radius: 50px;
+        font-size: 18px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s;
+        font-family: inherit;
+        position: relative;
+    }
+
+    .submit-button:hover, .login-button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0px 8px 25px rgba(226, 72, 136, 0.4);
+    }
+
+    .submit-button:disabled, .login-button:disabled {
+        opacity: 0.7;
+        cursor: not-allowed;
+        transform: none;
+    }
+
+    .loading-spinner {
+        font-size: 16px;
+    }
+
+    .success-message {
+        text-align: center;
+        padding: 30px;
+        background: linear-gradient(135deg, #10b981, #34d399);
+        color: white;
+        border-radius: 15px;
+        margin-top: 20px;
+    }
+
+    .success-message h3 {
+        margin-top: 0;
+        font-size: 24px;
+    }
+
+    /* Login Area Styles */
+    .logged-header {
+        background: linear-gradient(135deg, #e24888, #e16ba9);
+        padding: 15px 10%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        color: white;
+    }
+
+    .user-welcome {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .logout-button {
+        background: rgba(255,255,255,0.2);
+        color: white;
+        border: 1px solid rgba(255,255,255,0.3);
+        padding: 8px 16px;
+        border-radius: 20px;
+        cursor: pointer;
+        font-size: 14px;
+        transition: all 0.3s;
+    }
+
+    .logout-button:hover {
+        background: rgba(255,255,255,0.3);
+        transform: translateY(-1px);
+    }
+
+    .login-section {
+        text-align: center;
+    }
+
+    .login-form {
+        max-width: 400px;
+        margin: 0 auto;
+    }
+
+    .login-form .form-group {
+        text-align: left;
+    }
+
+    .login-error {
+        background: #fee2e2;
+        color: #dc2626;
+        padding: 12px;
+        border-radius: 8px;
+        margin-top: 15px;
+        font-size: 14px;
+    }
+
+    /* Members Section */
+    .members-stats {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 20px;
+        margin: 30px 0;
+    }
+
+    .stat-card {
+        background: linear-gradient(135deg, #e24888, #e16ba9);
+        color: white;
+        padding: 25px;
+        border-radius: 15px;
+        text-align: center;
+    }
+
+    .stat-number {
+        font-size: 36px;
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+
+    .stat-label {
+        font-size: 14px;
+        opacity: 0.9;
+    }
+
+    .recent-members h3 {
+        color: #d13685;
+        margin-bottom: 20px;
+    }
+
+    .members-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 15px;
+    }
+
+    .member-card {
+        background: #fbe1ec;
+        padding: 20px;
+        border-radius: 12px;
+        border-left: 4px solid #e24888;
+    }
+
+    .member-name {
+        font-weight: 600;
+        color: #4a2b3c;
+        margin-bottom: 5px;
+    }
+
+    .member-info {
+        font-size: 14px;
+        color: #666;
+        margin-bottom: 8px;
+    }
+
+    .member-interests {
+        font-size: 13px;
+        color: #888;
+        font-style: italic;
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 40px;
+        color: #888;
+    }
+
+    /* Testimonials */
+    .testimonials {
+        background: #fbe1ec;
+    }
+
+    .testimonials-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 25px;
+        margin-top: 30px;
+    }
+
+    .testimonial-card {
+        background: white;
+        padding: 25px;
+        border-radius: 15px;
+        box-shadow: 0px 4px 15px rgba(0,0,0,0.05);
+        border-left: 4px solid #e24888;
+    }
+
+    .testimonial-text {
+        font-style: italic;
+        line-height: 1.6;
+        margin-bottom: 20px;
+        color: #4a2b3c;
+    }
+
+    .testimonial-author {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .author-avatar {
+        font-size: 24px;
+        width: 50px;
+        height: 50px;
+        background: linear-gradient(135deg, #e24888, #e16ba9);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .author-name {
+        font-weight: 600;
+        color: #4a2b3c;
+    }
+
+    .author-location {
+        font-size: 14px;
+        color: #888;
+    }
+
+    /* Momento Meu */
+    .momento-meu {
+        background: white;
+    }
+
+    .momento-content {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 40px;
+        align-items: center;
+        margin-top: 30px;
+    }
+
+    .momento-features {
+        margin-top: 25px;
+        display: grid;
+        gap: 15px;
+    }
+
+    .feature-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px;
+        background: #fbe1ec;
+        border-radius: 10px;
+    }
+
+    .feature-icon {
+        font-size: 20px;
+    }
+
+    .momento-card {
+        background: linear-gradient(135deg, #e24888, #e16ba9);
+        color: white;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0px 8px 25px rgba(226, 72, 136, 0.3);
+    }
+
+    .card-header {
+        background: rgba(255,255,255,0.2);
+        padding: 15px 20px;
+        font-weight: 600;
+        text-align: center;
+    }
+
+    .card-content {
+        padding: 25px 20px;
+    }
+
+    .card-content h4 {
+        margin: 0 0 10px 0;
+        font-size: 18px;
+    }
+
+    .card-content p {
+        margin: 0 0 20px 0;
+        opacity: 0.9;
+    }
+
+    .progress-bar {
+        background: rgba(255,255,255,0.3);
+        height: 8px;
+        border-radius: 4px;
+        overflow: hidden;
+        margin-bottom: 10px;
+    }
+
+    .progress-fill {
+        background: white;
+        height: 100%;
+        border-radius: 4px;
+        transition: width 0.3s ease;
+    }
+
+    .progress-text {
+        font-size: 14px;
+        opacity: 0.8;
+        text-align: center;
+    }
+
+    /* Grupos */
+    .grupos {
+        background: #fbe1ec;
+    }
+
+    .grupos-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 20px;
+        margin-top: 30px;
+    }
+
+    .grupo-card {
+        background: white;
+        padding: 25px;
+        border-radius: 15px;
+        text-align: center;
+        transition: transform 0.3s ease;
+        box-shadow: 0px 4px 15px rgba(0,0,0,0.05);
+    }
+
+    .grupo-card:hover {
+        transform: translateY(-5px);
+    }
+
+    .grupo-icon {
+        font-size: 40px;
+        margin-bottom: 15px;
+    }
+
+    .grupo-card h3 {
+        color: #d13685;
+        margin-bottom: 10px;
+        font-size: 18px;
+    }
+
+    .grupo-card p {
+        color: #666;
+        line-height: 1.5;
+        margin-bottom: 20px;
+    }
+
+    .grupo-stats {
+        display: flex;
+        justify-content: space-between;
+        font-size: 14px;
+        color: #888;
+    }
+
+    /* Eventos */
+    .eventos {
+        background: white;
+    }
+
+    .eventos-grid {
+        display: grid;
+        gap: 20px;
+        margin-top: 30px;
+    }
+
+    .evento-card {
+        display: flex;
+        background: #fbe1ec;
+        border-radius: 15px;
+        padding: 20px;
+        gap: 20px;
+        transition: transform 0.3s ease;
+    }
+
+    .evento-card:hover {
+        transform: translateX(5px);
+    }
+
+    .evento-date {
+        background: linear-gradient(135deg, #e24888, #e16ba9);
+        color: white;
+        border-radius: 12px;
+        padding: 15px;
+        text-align: center;
+        min-width: 70px;
+        height: fit-content;
+    }
+
+    .date-day {
+        font-size: 24px;
+        font-weight: bold;
+        line-height: 1;
+    }
+
+    .date-month {
+        font-size: 12px;
+        opacity: 0.9;
+    }
+
+    .evento-info h3 {
+        color: #d13685;
+        margin: 0 0 8px 0;
+        font-size: 18px;
+    }
+
+    .evento-info p {
+        color: #666;
+        margin: 0 0 15px 0;
+        line-height: 1.5;
+    }
+
+    .evento-details {
+        display: flex;
+        gap: 15px;
+        flex-wrap: wrap;
+    }
+
+    .evento-details span {
+        font-size: 14px;
+        color: #888;
+        background: white;
+        padding: 4px 8px;
+        border-radius: 6px;
+    }
+
+    /* FAQ */
+    .faq {
+        background: #fbe1ec;
+    }
+
+    .faq-container {
+        margin-top: 30px;
+    }
+
+    .faq-item {
+        background: white;
+        border-radius: 12px;
+        margin-bottom: 15px;
+        overflow: hidden;
+        box-shadow: 0px 2px 10px rgba(0,0,0,0.05);
+    }
+
+    .faq-question {
+        padding: 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        cursor: pointer;
+        font-weight: 600;
+        color: #4a2b3c;
+        transition: background-color 0.3s ease;
+    }
+
+    .faq-question:hover {
+        background: #fbe1ec;
+    }
+
+    .faq-toggle {
+        font-size: 24px;
+        color: #e24888;
+        transition: transform 0.3s ease;
+    }
+
+    .faq-item.active .faq-toggle {
+        transform: rotate(45deg);
+    }
+
+    .faq-answer {
+        padding: 0 20px;
+        max-height: 0;
+        overflow: hidden;
+        transition: all 0.3s ease;
+    }
+
+    .faq-item.active .faq-answer {
+        padding: 0 20px 20px 20px;
+        max-height: 200px;
+    }
+
+    .faq-answer p {
+        color: #666;
+        line-height: 1.6;
+        margin: 0;
+    }
+
+    footer {
+        text-align: center;
+        padding: 30px;
+        font-size: 14px;
+        background: #fbe1ec;
+        margin: 0;
+    }
+
+    @media (max-width: 768px) {
+        header h1 {
+            font-size: 32px;
+        }
+
+        header p {
+            font-size: 16px;
+        }
+
+        section {
+            padding: 30px 5%;
+        }
+
+        h2 {
+            font-size: 24px;
+        }
+
+        .cta-button {
+            font-size: 18px;
+            padding: 15px 30px;
+        }
+
+        .form-row {
+            grid-template-columns: 1fr;
+        }
+
+        .modal-content {
+            margin: 10% auto;
+            width: 95%;
+        }
+
+        .members-stats {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .momento-content {
+            grid-template-columns: 1fr;
+            gap: 25px;
+        }
+
+        .testimonials-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .grupos-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .evento-card {
+            flex-direction: column;
+            text-align: center;
+        }
+
+        .evento-date {
+            align-self: center;
+        }
+
+        .evento-details {
+            justify-content: center;
+        }
+
+        .logged-header {
+            padding: 15px 5%;
+        }
+
+        .user-welcome {
+            flex-direction: column;
+            gap: 10px;
+            text-align: center;
+        }
+    }
+</style>
+  <style>@view-transition { navigation: auto; }</style>
+  <script src="https://cdn.tailwindcss.com" type="text/javascript"></script>
+ </head>
+ <body><!-- Área Pública (inicial) -->
+  <div id="public-area">
+   <header>
+    <h1 id="site-title">UNIELLAS</h1>
+    <p id="site-tagline">Um lugar seguro para ser você ✨</p>
+   </header>
+   <section class="sobre">
+    <h2 id="about-title">O que é a UNIELLAS?</h2>
+    <p id="about-text"><strong>UNIELLAS</strong> é uma rede de apoio e autoconhecimento feminino criada pela <strong>CONEXA</strong>. Um espaço acolhedor onde mulheres podem se conectar, compartilhar, crescer e se fortalecer — emocionalmente, profissionalmente e espiritualmente.</p>
+   </section>
+   <section class="funciona">
+    <h2 id="how-it-works-title">Como funciona?</h2>
+    <ul>
+     <li>Crie seu perfil com interesses e objetivos pessoais.</li>
+     <li>Encontre mulheres da sua região com histórias parecidas com a sua.</li>
+     <li>Participe de grupos e salas de conversa exclusivas.</li>
+     <li>Desbloqueie o <strong>Momento Meu</strong>: desafios de autoconhecimento e amor-próprio.</li>
+     <li>Troque apoio, conselhos e experiências reais.</li>
+    </ul>
+   </section>
+   <section class="beneficios">
+    <h2 id="benefits-title">Como a UNIELLAS transforma vidas?</h2>
+    <ul>
+     <li>Ajuda mulheres a não se sentirem sozinhas.</li>
+     <li>Fortalece a autoestima e o desenvolvimento pessoal.</li>
+     <li>Gera amizades, conexões e oportunidades reais.</li>
+     <li>Promove apoio mútuo em todas as fases da vida.</li>
+    </ul>
+   </section>
+   <section class="publico">
+    <h2 id="audience-title">Para quem é?</h2>
+    <p id="audience-text">Para todas as mulheres a partir de 16 anos que desejam conexão, apoio, inspiração e um ambiente seguro para evoluir.</p>
+   </section>
+   <section class="diferencial">
+    <h2 id="differential-title">Nosso diferencial</h2>
+    <p id="differential-text">Uma comunidade <strong>sem julgamentos</strong>, <strong>sem comparações</strong> e <strong>sem pressão</strong>. Aqui, cada mulher é celebrada por quem é. Crescemos juntas. 🌸</p>
+   </section>
+   <div class="cta"><button id="join-button" class="cta-button">Quero fazer parte 💗</button>
+   </div><!-- Seção FAQ -->
+   <section class="faq">
+    <h2>Perguntas Frequentes 🤔</h2>
+    <div class="faq-container">
+     <div class="faq-item">
+      <div class="faq-question"><span>A UNIELLAS é gratuita?</span> <span class="faq-toggle">+</span>
+      </div>
+      <div class="faq-answer">
+       <p>Sim! A UNIELLAS é completamente gratuita. Acreditamos que toda mulher merece ter acesso a uma rede de apoio, independentemente de sua situação financeira.</p>
+      </div>
+     </div>
+     <div class="faq-item">
+      <div class="faq-question"><span>Como funciona a moderação?</span> <span class="faq-toggle">+</span>
+      </div>
+      <div class="faq-answer">
+       <p>Temos uma equipe dedicada de moderadoras que garantem que nossa comunidade seja sempre um espaço seguro, respeitoso e acolhedor para todas as mulheres.</p>
+      </div>
+     </div>
+     <div class="faq-item">
+      <div class="faq-question"><span>Posso participar se sou muito tímida?</span> <span class="faq-toggle">+</span>
+      </div>
+      <div class="faq-answer">
+       <p>Claro! Muitas de nossas UNIELLAS começaram tímidas. Você pode começar apenas observando e participar no seu próprio ritmo. Não há pressão alguma!</p>
+      </div>
+     </div>
+     <div class="faq-item">
+      <div class="faq-question"><span>Meus dados ficam seguros?</span> <span class="faq-toggle">+</span>
+      </div>
+      <div class="faq-answer">
+       <p>Absolutamente! Levamos a privacidade muito a sério. Seus dados pessoais são protegidos e nunca compartilhados com terceiros.</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- Seção de Login (aparece após cadastro) -->
+   <section id="login-section" class="login-section" style="display: none;">
+    <h2>Acesse sua conta UNIELLAS 🌸</h2>
+    <p>Entre com seu email para acessar a comunidade:</p>
+    <form id="login-form" class="login-form">
+     <div class="form-group"><label for="login-email">Email</label> <input type="email" id="login-email" name="email" required>
+     </div><button type="submit" class="login-button"> <span class="login-text">Entrar na comunidade</span> <span class="login-spinner" style="display: none;">⏳</span> </button>
+     <div id="login-error" class="login-error" style="display: none;"></div>
+    </form>
+   </section>
+  </div><!-- Modal de Cadastro -->
+  <div id="signup-modal" class="modal">
+   <div class="modal-content"><span class="close">×</span>
+    <h2>Junte-se à UNIELLAS! 💗</h2>
+    <p>Preencha seus dados para fazer parte da nossa comunidade:</p>
+    <form id="signup-form" class="signup-form">
+     <div class="form-g
